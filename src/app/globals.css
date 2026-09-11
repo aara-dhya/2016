@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  border-radius: 0px !important;
+}
+
+body {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Terminal Aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid #222222;
+}
+::-webkit-scrollbar-thumb {
+  background: #77DD77;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #61D095;
+}
+
+/* Hard Brutalist Buttons */
+.btn-primary {
+  background-color: #77DD77 !important;
+  color: #000000 !important;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: 2px solid #77DD77 !important;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.btn-primary:hover {
+  background-color: #000000 !important;
+  color: #77DD77 !important;
+  border: 2px solid #77DD77 !important;
+  box-shadow: 4px 4px 0px #77DD77;
+}
+
+.btn-secondary {
+  background-color: #000000 !important;
+  color: #77DD77 !important;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: 2px solid #77DD77 !important;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.btn-secondary:hover {
+  background-color: #77DD77 !important;
+  color: #000000 !important;
+  box-shadow: 4px 4px 0px #77DD77;
+}
+
+.btn-danger {
+  background-color: #000000 !important;
+  color: #FF3333 !important;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: 2px solid #FF3333 !important;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-danger:hover {
+  background-color: #FF3333 !important;
+  color: #000000 !important;
+}
+
+/* Brutalist Card Container */
+.cyber-card {
+  background-color: #000000 !important;
+  border: 1px solid #77DD77 !important;
+  padding: 24px;
+  box-shadow: 4px 4px 0px #111111;
+  transition: all 0.2s ease;
+}
+
+.cyber-card:hover {
+  box-shadow: 4px 4px 0px #77DD77;
+}
+
+.cyber-card-subtle {
+  background-color: #050505 !important;
+  border: 1px solid #222222 !important;
+  padding: 20px;
+}
+
+/* Brutalist Form Inputs */
+.cyber-input {
+  background-color: #0A0A0A !important;
+  border: 1px solid #444444 !important;
+  color: #77DD77 !important;
+  font-family: var(--font-mono);
+  padding: 10px 14px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+
+.cyber-input:focus {
+  border: 2px solid #77DD77 !important;
+  background-color: #000000 !important;
+}
+
+.cyber-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid #77DD77 !important;
+  color: #77DD77 !important;
+  background: #000000 !important;
+}
