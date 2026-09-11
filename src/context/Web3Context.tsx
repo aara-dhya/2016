@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import contractData from '../contracts/contractData.json';
 
 export type RoleType = 'ADMIN' | 'MANAGER' | 'AUDITOR' | 'USER' | 'NONE';
 
@@ -55,19 +54,19 @@ export const DEMO_PERSONAS: Persona[] = [
     role: 'ADMIN',
     address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
     did: 'did:cyber:admin:0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-    description: 'System Administrator - Full Access, Role Management & Lock Controls'
+    description: 'System Administrator - Full Access, RBAC & Security Controls'
   },
   {
     key: 'manager',
-    name: 'Asset Officer',
+    name: 'Asset & Identity Officer',
     role: 'MANAGER',
     address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
     did: 'did:cyber:manager:0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-    description: 'Asset Manager - Minting, Identity Verification & Provisioning'
+    description: 'Asset Manager - Identity Provisioning & Asset Registration'
   },
   {
     key: 'auditor',
-    name: 'Chief Auditor',
+    name: 'Chief Compliance Auditor',
     role: 'AUDITOR',
     address: '0x90F79bf6EB2c4f8080653A214d5A230128c7c9ec',
     did: 'did:cyber:auditor:0x90F79bf6EB2c4f8080653A214d5A230128c7c9ec',
@@ -79,7 +78,7 @@ export const DEMO_PERSONAS: Persona[] = [
     role: 'USER',
     address: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
     did: 'did:cyber:user:0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-    description: 'Standard User - Holds Security Key (Soulbound) & Pass NFT'
+    description: 'Corporate User - Holds Hardware Security Key & Clearance Pass'
   },
   {
     key: 'user2',
@@ -87,7 +86,7 @@ export const DEMO_PERSONAS: Persona[] = [
     role: 'USER',
     address: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
     did: 'did:cyber:user:0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-    description: 'Standard User - Holds Vault Locker Certificate NFT'
+    description: 'Corporate User - Holds Vault Ownership Certificate'
   }
 ];
 
@@ -123,19 +122,15 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
   const [auditLogs, setAuditLogs] = useState<AuditLogData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
-    '[INIT] Cyberpunk Web3 Node initialized.',
-    '[NET] Connected to Local Hardhat Enclave (ChainID: 31337).',
-    `[AUTH] Active Session: ${DEMO_PERSONAS[0].name} (${DEMO_PERSONAS[0].role})`
+    '[SYSTEM] Enterprise SaaS Security Enclave initialized.',
+    '[NETWORK] Connected to Local Ledger (ChainID: 31337).',
+    `[AUTH] Authenticated Session: ${DEMO_PERSONAS[0].name} (${DEMO_PERSONAS[0].role})`
   ]);
   const [selectedIPFSURI, setSelectedIPFSURI] = useState<string | null>(null);
 
   const addTerminalLog = (msg: string) => {
     const timestamp = new Date().toISOString().substring(11, 19);
     setTerminalLogs(prev => [`[${timestamp}] ${msg}`, ...prev.slice(0, 49)]);
-  };
-
-  const getProvider = () => {
-    return new ethers.JsonRpcProvider('http://127.0.0.1:8545');
   };
 
   const inspectIPFS = (uri: string) => {
@@ -146,7 +141,6 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     setSelectedIPFSURI(null);
   };
 
-  // Mock initial state for immediate rich interactive demo
   const loadInitialMockData = () => {
     const mockIdentities: IdentityData[] = [
       {
@@ -162,7 +156,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
       {
         did: 'did:cyber:manager:0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
         walletAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        name: 'Asset & Identity Manager',
+        name: 'Asset & Identity Officer',
         metadataURI: 'ipfs://bafkreididproofmanager002',
         isRegistered: true,
         isRevoked: false,
@@ -228,7 +222,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       {
         tokenId: 3,
-        name: 'Vault Locker #88 Ownership NFT',
+        name: 'Vault Locker #88 Ownership Certificate',
         description: 'Physical Vault Locker tokenization certificate for High-Density Storage Vault in Neo-City Enclave.',
         serialNumber: 'SN-VAULT-88-CERT',
         issuanceDate: Date.now() - 86400000 * 1,
@@ -247,7 +241,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
         actionType: 'SYSTEM_GENESIS',
         actor: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
         target: '0x0000000000000000000000000000000000000000',
-        details: 'RoleAccessControl and IdentityRegistry initialized on chain 31337.'
+        details: 'RoleAccessControl and IdentityRegistry initialized on system registry.'
       },
       {
         id: 2,
@@ -255,7 +249,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
         actionType: 'IDENTITY_REGISTERED',
         actor: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
         target: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        details: 'Registered MANAGER_ROLE for Asset & Identity Manager.'
+        details: 'Registered MANAGER_ROLE for Asset & Identity Officer.'
       },
       {
         id: 3,
@@ -268,26 +262,26 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
       {
         id: 4,
         timestamp: Date.now() - 86400000 * 2,
-        actionType: 'ASSET_MINTED',
+        actionType: 'ASSET_REGISTERED',
         actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
         target: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        details: 'Minted Soulbound NFT Token #1 (Titan Security Key v5) for Alice Vance.'
+        details: 'Registered Asset Credential #1 (Titan Security Key v5) for Alice Vance.'
       },
       {
         id: 5,
         timestamp: Date.now() - 86400000 * 1.5,
-        actionType: 'ASSET_MINTED',
+        actionType: 'ASSET_REGISTERED',
         actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
         target: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        details: 'Minted Unlocked NFT Token #2 (Level-4 Quantum Node Pass) for Alice Vance.'
+        details: 'Registered Transferable Asset #2 (Level-4 Quantum Node Pass) for Alice Vance.'
       },
       {
         id: 6,
         timestamp: Date.now() - 86400000 * 1,
-        actionType: 'ASSET_MINTED',
+        actionType: 'ASSET_REGISTERED',
         actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
         target: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-        details: 'Minted Soulbound NFT Token #3 (Vault Locker #88 Ownership NFT) for Bob Stone.'
+        details: 'Registered Asset Credential #3 (Vault Locker #88 Ownership Certificate) for Bob Stone.'
       }
     ];
 
@@ -304,7 +298,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     const found = DEMO_PERSONAS.find(p => p.key === personaKey);
     if (found) {
       setActivePersona(found);
-      addTerminalLog(`Switched active persona to ${found.name} (${found.role})`);
+      addTerminalLog(`Switched active session to ${found.name} (${found.role})`);
     }
   };
 
@@ -315,7 +309,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     role: string
   ): Promise<boolean> => {
     setLoading(true);
-    addTerminalLog(`[TX] Registering identity for ${name} (${wallet})...`);
+    addTerminalLog(`[SYSTEM] Provisioning user identity for ${name} (${wallet})...`);
 
     const newDID = `did:cyber:${role.toLowerCase()}:${wallet}`;
     const newId: IdentityData = {
@@ -341,7 +335,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     setAuditLogs(prev => [newLog, ...prev]);
-    addTerminalLog(`[SUCCESS] Identity created. DID: ${newDID}`);
+    addTerminalLog(`[SUCCESS] User identity created. DID: ${newDID}`);
     setLoading(false);
     return true;
   };
@@ -356,7 +350,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     isLocked: boolean
   ): Promise<boolean> => {
     setLoading(true);
-    addTerminalLog(`[TX] Minting NFT Asset '${name}' to ${recipient}...`);
+    addTerminalLog(`[SYSTEM] Registering digital asset '${name}' for ${recipient}...`);
 
     const targetIdentity = identities.find(i => i.walletAddress.toLowerCase() === recipient.toLowerCase());
     const ownerDID = targetIdentity ? targetIdentity.did : `did:cyber:user:${recipient}`;
@@ -380,21 +374,21 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     const newLog: AuditLogData = {
       id: auditLogs.length + 1,
       timestamp: Date.now(),
-      actionType: 'ASSET_MINTED',
+      actionType: 'ASSET_REGISTERED',
       actor: activePersona.address,
       target: recipient,
-      details: `Minted NFT Token #${newAssetId} (${name}) - Locked: ${isLocked ? 'TRUE (Soulbound)' : 'FALSE'}`
+      details: `Issued Credential #${newAssetId} (${name}) - Soulbound: ${isLocked ? 'TRUE' : 'FALSE'}`
     };
 
     setAuditLogs(prev => [newLog, ...prev]);
-    addTerminalLog(`[SUCCESS] NFT Token #${newAssetId} minted. Soulbound: ${isLocked}`);
+    addTerminalLog(`[SUCCESS] Asset Credential #${newAssetId} issued. Soulbound: ${isLocked}`);
     setLoading(false);
     return true;
   };
 
   const toggleAssetLock = async (tokenId: number, isLocked: boolean): Promise<boolean> => {
     setLoading(true);
-    addTerminalLog(`[TX] Toggling Lock state for Token #${tokenId} -> ${isLocked ? 'LOCKED' : 'UNLOCKED'}...`);
+    addTerminalLog(`[SYSTEM] Updating transfer lock for Asset #${tokenId} -> ${isLocked ? 'LOCKED' : 'UNLOCKED'}...`);
 
     setAssets(prev =>
       prev.map(a => (a.tokenId === tokenId ? { ...a, isLocked } : a))
@@ -407,28 +401,28 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
       actionType: 'ASSET_LOCK_TOGGLED',
       actor: activePersona.address,
       target: targetAsset ? targetAsset.ownerAddress : activePersona.address,
-      details: `Admin changed lock status for Token #${tokenId} to ${isLocked ? 'LOCKED (Soulbound)' : 'UNLOCKED'}`
+      details: `Admin changed lock status for Asset #${tokenId} to ${isLocked ? 'LOCKED (Soulbound)' : 'UNLOCKED'}`
     };
 
     setAuditLogs(prev => [newLog, ...prev]);
-    addTerminalLog(`[SUCCESS] Token #${tokenId} lock status updated to ${isLocked ? 'LOCKED' : 'UNLOCKED'}`);
+    addTerminalLog(`[SUCCESS] Asset #${tokenId} lock status updated to ${isLocked ? 'LOCKED' : 'UNLOCKED'}`);
     setLoading(false);
     return true;
   };
 
   const transferAsset = async (tokenId: number, recipientAddress: string): Promise<boolean> => {
     setLoading(true);
-    addTerminalLog(`[TX] Initiating transfer for Token #${tokenId} to ${recipientAddress}...`);
+    addTerminalLog(`[SYSTEM] Initiating credential transfer for Asset #${tokenId} to ${recipientAddress}...`);
 
     const asset = assets.find(a => a.tokenId === tokenId);
     if (!asset) {
-      addTerminalLog(`[REVERT] Error: Token #${tokenId} not found.`);
+      addTerminalLog(`[ERROR] Asset #${tokenId} not found.`);
       setLoading(false);
       return false;
     }
 
     if (asset.isLocked) {
-      addTerminalLog(`[REVERT] Transaction Reverted! Asset is Soulbound and locked against transfers.`);
+      addTerminalLog(`[REVERT] Transfer Blocked: Asset is Soulbound and locked by administrator policy.`);
       setLoading(false);
       return false;
     }
@@ -448,18 +442,18 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
       actionType: 'ASSET_TRANSFERRED',
       actor: activePersona.address,
       target: recipientAddress,
-      details: `Transferred Token #${tokenId} (${asset.name}) from ${activePersona.address} to DID: ${newDID}`
+      details: `Transferred Asset #${tokenId} (${asset.name}) from ${activePersona.address} to DID: ${newDID}`
     };
 
     setAuditLogs(prev => [newLog, ...prev]);
-    addTerminalLog(`[SUCCESS] Token #${tokenId} transferred to ${recipientAddress}`);
+    addTerminalLog(`[SUCCESS] Asset #${tokenId} transferred to ${recipientAddress}`);
     setLoading(false);
     return true;
   };
 
   const assignRole = async (targetAddress: string, roleName: string): Promise<boolean> => {
     setLoading(true);
-    addTerminalLog(`[TX] Assigning ${roleName} to ${targetAddress}...`);
+    addTerminalLog(`[SYSTEM] Granting ${roleName} to ${targetAddress}...`);
 
     setIdentities(prev =>
       prev.map(i =>
@@ -486,7 +480,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const revokeIdentity = async (walletAddress: string): Promise<boolean> => {
     setLoading(true);
-    addTerminalLog(`[TX] Revoking Identity for ${walletAddress}...`);
+    addTerminalLog(`[SYSTEM] Revoking user credentials for ${walletAddress}...`);
 
     setIdentities(prev =>
       prev.map(i =>
@@ -506,13 +500,13 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     setAuditLogs(prev => [newLog, ...prev]);
-    addTerminalLog(`[SUCCESS] Identity revoked for ${walletAddress}`);
+    addTerminalLog(`[SUCCESS] User credentials revoked for ${walletAddress}`);
     setLoading(false);
     return true;
   };
 
   const refreshState = async () => {
-    addTerminalLog('[REFRESH] Refreshing state telemetry...');
+    addTerminalLog('[REFRESH] Synchronizing system telemetry...');
   };
 
   return (

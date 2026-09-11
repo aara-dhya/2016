@@ -1,0 +1,78 @@
+### Nexus HR & IT Asset Manager API Verification Suite
+### Works natively with VS Code REST Client extension or HTTP tools
+
+@baseUrl = http://localhost:5001
+
+### 1. Health Check
+GET {{baseUrl}}/api/health
+Content-Type: application/json
+
+###
+
+### 2. SIWE Nonce Generation Request
+GET {{baseUrl}}/api/auth/nonce?address=0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65
+Content-Type: application/json
+
+###
+
+### 3. SIWE Signature Verification (Sign-In with Ethereum)
+POST {{baseUrl}}/api/auth/verify
+Content-Type: application/json
+
+{
+  "address": "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65",
+  "signature": "0x98127391823791823",
+  "nonce": "nexus_nonce_demo"
+}
+
+###
+
+### 4. SSO Frictionless Onboarding (Account Abstraction & DID creation)
+POST {{baseUrl}}/api/auth/sso-login
+Content-Type: application/json
+
+{
+  "email": "carol.danvers@nexus.corp",
+  "name": "Carol Danvers",
+  "department": "Quantum Infrastructure"
+}
+
+###
+
+### 5. Issue IT Equipment & Provision Printable QR Code Sticker
+POST {{baseUrl}}/api/assets/issue
+Content-Type: application/json
+
+{
+  "recipientEmail": "carol.danvers@nexus.corp",
+  "assetName": "Quantum-Resistant Enclave HSM",
+  "description": "Enterprise Grade Cryptographic Hardware Token for Zero-Trust Access Control",
+  "serialNumber": "SN-QUANTUM-2026-X9",
+  "category": "Hardware Security Module",
+  "isLocked": true,
+  "warrantyExpiry": "2029-06-30"
+}
+
+###
+
+### 6. Verify Physical Asset via Serial Number Bridge (QR Scanner Mock Endpoint)
+GET {{baseUrl}}/api/assets/verify/SN-TITAN-9012-CYBER
+Content-Type: application/json
+
+###
+
+### 7. Trigger Web2 API Webhook Relayer (GitHub & Kisi Physical Access Control)
+POST {{baseUrl}}/api/webhooks/trigger
+Content-Type: application/json
+
+{
+  "role": "ENGINEERING_ROLE",
+  "userEmail": "carol.danvers@nexus.corp",
+  "employeeName": "Carol Danvers"
+}
+
+###
+
+### 8. Fetch Audit Logs for Webhook Web2 Relayer
+GET {{baseUrl}}/api/webhooks/logs
+Content-Type: application/json

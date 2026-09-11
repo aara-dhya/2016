@@ -48,3 +48,5 @@ lerna-debug.log*
 # agy instructions
 gemini.md 
 brandGuidelines.md
+frontend-architecture-spec.md
+product-requirements-spec.md

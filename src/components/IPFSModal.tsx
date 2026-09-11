@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useWeb3 } from '../context/Web3Context';
-import { X, Database, CheckCircle, Copy, ExternalLink } from 'lucide-react';
+import { X, ShieldCheck, Copy } from 'lucide-react';
 
 export const IPFSModal: React.FC = () => {
   const { selectedIPFSURI, closeIPFSModal } = useWeb3();
@@ -10,60 +10,63 @@ export const IPFSModal: React.FC = () => {
   if (!selectedIPFSURI) return null;
 
   const mockPayload = {
-    ipfsHash: selectedIPFSURI,
-    gatewayURL: `https://ipfs.io/ipfs/${selectedIPFSURI.replace('ipfs://', '')}`,
-    storageStatus: 'PINNED_DECENTRALIZED',
-    schemaVersion: 'W3C-DID-v1.0 / ERC721-Metadata',
-    cryptographicProof: {
-      algorithm: 'ECDSA_secp256k1',
-      hashType: 'keccak256',
-      signature: '0x94fa108920194812a4b89012fca12093810293841029384102938410923841029384'
+    identityProof: {
+      type: 'VerifiableCredential',
+      issuer: 'did:nexus:enclave:0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+      issuanceDate: new Date().toISOString(),
+      credentialSubject: {
+        ipfsURI: selectedIPFSURI,
+        verificationMethod: 'Ed25519Signature2020',
+        proofPurpose: 'assertionMethod',
+        proofValue: '0x94829bf8293c84029482938402938409283409'
+      }
     },
-    attributes: [
-      { trait_type: 'Security Standard', value: 'FIDO2 / PKCS#11' },
-      { trait_type: 'Decentralized Storage', value: 'IPFS + Filecoin' },
-      { trait_type: 'Audit Clearance', value: 'VERIFIED' }
-    ]
+    securityPolicy: 'AES-256-GCM Encrypted Enclave Payload'
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(JSON.stringify(mockPayload, null, 2));
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 font-mono">
-      <div className="cyber-card border-2 border-[#77DD77] bg-black max-w-2xl w-full p-6 space-y-4 shadow-neon">
-        <div className="flex justify-between items-center border-b border-[#222] pb-3">
-          <div className="flex items-center gap-2 text-[#77DD77] font-bold text-sm">
-            <Database size={18} /> DECENTRALIZED IPFS METADATA INSPECTOR
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 font-mono select-none animate-fade-in">
+      <div className="bg-black border-2 border-[#77DD77] rounded-none max-w-2xl w-full p-6 space-y-4 shadow-[8px_8px_0px_#77DD77] relative text-white">
+        <div className="flex justify-between items-center border-b border-[#222222] pb-3">
+          <div className="flex items-center space-x-2">
+            <ShieldCheck size={18} className="text-[#77DD77]" />
+            <h3 className="font-extrabold text-sm text-[#77DD77] uppercase tracking-wider">// ENCRYPTED IPFS PROOF PAYLOAD</h3>
           </div>
           <button
             onClick={closeIPFSModal}
-            className="p-1 hover:bg-[#77DD77] hover:text-black border border-[#77DD77] text-[#77DD77] transition-all"
+            className="text-[#A0A0A0] hover:text-[#77DD77] p-1 rounded-none hover:bg-[#111111] transition-colors border border-transparent hover:border-[#77DD77]"
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="text-xs text-[#A0A0A0] space-y-1">
-          <div>
-            URI: <code className="text-[#77DD77] font-bold">{selectedIPFSURI}</code>
+        <div className="space-y-2">
+          <div className="flex justify-between items-center text-xs">
+            <span className="text-[#A0A0A0] font-bold uppercase">// TARGET HASH:</span>
+            <code className="text-[#77DD77] font-mono text-[11px]">{selectedIPFSURI}</code>
           </div>
-          <div>
-            Status: <span className="text-[#77DD77] font-bold">[PINNED ON DECENTRALIZED NETWORK]</span>
+
+          <div className="bg-black p-4 border border-[#333333] text-xs font-mono text-[#77DD77] overflow-x-auto max-h-80 selection:bg-[#77DD77] selection:text-black">
+            <pre>{JSON.stringify(mockPayload, null, 2)}</pre>
           </div>
         </div>
 
-        {/* JSON Display Box */}
-        <div className="bg-[#050505] border border-[#333] p-4 font-mono text-xs text-[#77DD77] max-h-80 overflow-y-auto">
-          <pre>{JSON.stringify(mockPayload, null, 2)}</pre>
-        </div>
-
-        <div className="flex justify-between items-center pt-2 text-xs">
-          <span className="text-[10px] text-[#38A368]">
-            CONTENT-ADDRESSABLE HASH GUARANTEES IMMUTABILITY
-          </span>
+        <div className="flex justify-end space-x-3 pt-2">
+          <button
+            onClick={handleCopy}
+            className="btn-secondary text-xs font-bold"
+          >
+            <Copy size={14} /> COPY JSON PAYLOAD
+          </button>
           <button
             onClick={closeIPFSModal}
-            className="btn-primary py-1.5 px-4 text-xs"
+            className="btn-primary text-xs font-bold"
           >
-            CLOSE INSPECTOR
+            CLOSE
           </button>
         </div>
       </div>

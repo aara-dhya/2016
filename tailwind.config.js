@@ -10,19 +10,18 @@ export default {
     extend: {
       colors: {
         black: '#000000',
-        darkBg: '#050505',
-        darkCard: '#0A0A0A',
-        neon: '#77DD77',
-        neonGreen: '#77DD77',
+        pastel: '#77DD77',
         pastelGreen: '#77DD77',
-        neonGlow: '#61D095',
-        neonDark: '#38A368',
+        darkMint: '#38A368',
         mutedGray: '#A0A0A0',
-        borderGray: '#222222',
-        borderBright: '#77DD77',
+        darkSurface: '#0A0A0A',
+        cardBg: '#050505',
+        borderDark: '#222222',
+        borderPastel: '#77DD77',
       },
       fontFamily: {
-        mono: ['"JetBrains Mono"', '"Space Mono"', '"Fira Code"', 'Courier New', 'monospace'],
+        sans: ['"JetBrains Mono"', '"Fira Code"', '"Space Mono"', 'monospace'],
+        mono: ['"JetBrains Mono"', '"Fira Code"', '"Space Mono"', 'monospace'],
       },
       borderRadius: {
         none: '0px',
@@ -36,10 +35,9 @@ export default {
         full: '0px',
       },
       boxShadow: {
-        neon: '4px 4px 0px #77DD77',
-        neonSm: '2px 2px 0px #77DD77',
-        neonLg: '6px 6px 0px #77DD77',
-        neonHover: '0px 0px 15px rgba(119, 221, 119, 0.4)',
+        hardPastel: '4px 4px 0px #77DD77',
+        hardDark: '4px 4px 0px #222222',
+        pastelGlow: '0 0 10px rgba(119, 221, 119, 0.4)',
       }
     },
   },

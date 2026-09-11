@@ -3,8 +3,8 @@ import './globals.css';
 import { Web3Provider } from '../context/Web3Context';
 
 export const metadata: Metadata = {
-  title: 'CYBER_ID // Decentralized Identity & Asset Enclave',
-  description: 'Blockchain-based dApp for W3C Decentralized Identifiers (DIDs), Role-Based Access Control (RBAC), and Soulbound NFT Asset Management.',
+  title: 'CYBER_ID // Enterprise Identity & Digital Asset Infrastructure',
+  description: 'Enterprise SaaS dApp for W3C Decentralized Identifiers (DIDs), Role-Based Access Control (RBAC), and Soulbound Asset Management.',
 };
 
 export default function RootLayout({
@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-black text-white antialiased">
+    <html lang="en" className="dark">
+      <body className="bg-black text-white font-mono antialiased">
         <Web3Provider>
           {children}
         </Web3Provider>

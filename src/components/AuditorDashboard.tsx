@@ -2,159 +2,121 @@
 
 import React, { useState } from 'react';
 import { useWeb3 } from '../context/Web3Context';
-import { Eye, Search, Filter, ShieldCheck, Download, RefreshCw, FileText, CheckCircle2 } from 'lucide-react';
+import { Activity, ShieldCheck, Database, Search } from 'lucide-react';
 
 export const AuditorDashboard: React.FC = () => {
-  const { auditLogs, refreshState } = useWeb3();
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('ALL');
+  const { auditLogs } = useWeb3();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [actionFilter, setActionFilter] = useState('ALL');
 
   const filteredLogs = auditLogs.filter(log => {
-    const matchesSearch =
-      log.actionType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log.actor.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log.target.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      log.details.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = 
+      log.actor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.target.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.details.toLowerCase().includes(searchTerm.toLowerCase());
 
-    if (categoryFilter === 'ALL') return matchesSearch;
-    if (categoryFilter === 'IDENTITY') return matchesSearch && log.actionType.includes('IDENTITY');
-    if (categoryFilter === 'MINT') return matchesSearch && log.actionType.includes('MINT');
-    if (categoryFilter === 'LOCK') return matchesSearch && log.actionType.includes('LOCK');
-    if (categoryFilter === 'TRANSFER') return matchesSearch && log.actionType.includes('TRANSFER');
-    return matchesSearch;
+    const matchesAction = actionFilter === 'ALL' || log.actionType === actionFilter;
+    return matchesSearch && matchesAction;
   });
 
-  const getActionBadge = (actionType: string) => {
-    if (actionType.includes('IDENTITY')) {
-      return <span className="bg-black text-[#77DD77] border border-[#77DD77] px-2 py-0.5 text-[10px] font-bold">[IDENTITY]</span>;
-    }
-    if (actionType.includes('MINT')) {
-      return <span className="bg-[#77DD77] text-black border border-[#77DD77] px-2 py-0.5 text-[10px] font-extrabold">[MINT]</span>;
-    }
-    if (actionType.includes('LOCK')) {
-      return <span className="bg-[#38A368] text-white border border-[#77DD77] px-2 py-0.5 text-[10px] font-bold">[LOCK_CONTROL]</span>;
-    }
-    if (actionType.includes('TRANSFER')) {
-      return <span className="bg-[#111] text-white border border-[#444] px-2 py-0.5 text-[10px] font-bold">[TRANSFER]</span>;
-    }
-    return <span className="cyber-badge">{actionType}</span>;
-  };
-
-  const exportLogsAsJSON = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(auditLogs, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `audit_logs_${Date.now()}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-  };
-
   return (
-    <div className="space-y-8 font-mono">
+    <div className="space-y-6 font-mono w-full">
       {/* Header Banner */}
-      <div className="cyber-card bg-[#050505] border-2 border-[#77DD77] p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-black border border-[#77DD77] rounded-none p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-[4px_4px_0px_#222222]">
         <div>
-          <div className="flex items-center gap-2 text-[#77DD77] text-xs font-bold">
-            <Eye size={18} /> IMMUTABLE AUDIT TRAIL & PROVENANCE INSPECTOR
+          <div className="flex items-center gap-2 text-[#77DD77] text-xs font-bold uppercase tracking-widest">
+            <ShieldCheck size={16} /> // IMMUTABLE COMPLIANCE LEDGER
           </div>
-          <h1 className="text-2xl font-extrabold text-white uppercase tracking-wider mt-1">
-            Global Compliance Audit Ledger
+          <h1 className="text-xl font-extrabold text-white tracking-wider uppercase mt-1">
+            AUDIT LOG TRAIL & REGISTRY HISTORY
           </h1>
         </div>
-
-        <div className="flex gap-2">
-          <button
-            onClick={refreshState}
-            className="btn-secondary text-xs flex items-center gap-1 py-2 px-3"
-          >
-            <RefreshCw size={14} /> REFRESH
-          </button>
-          <button
-            onClick={exportLogsAsJSON}
-            className="btn-primary text-xs flex items-center gap-1 py-2 px-3"
-          >
-            <Download size={14} /> EXPORT AUDIT LOGS
-          </button>
+        <div className="text-right text-xs text-[#A0A0A0] border-l border-[#222222] pl-3">
+          READ-ONLY ACCESS: <span className="text-[#77DD77] font-bold">[AUDITOR_ROLE]</span><br />
+          TOTAL LOGS: <span className="text-white font-bold">{auditLogs.length} EVENTS</span>
         </div>
       </div>
 
-      {/* Filter & Search Bar */}
-      <div className="cyber-card border border-[#77DD77] p-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        {/* Search Input */}
-        <div className="relative w-full md:w-96">
-          <Search size={16} className="absolute left-3 top-3 text-[#A0A0A0]" />
+      {/* Filter and Search Bar */}
+      <div className="bg-black border border-[#222222] p-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <div className="relative flex-1 w-full">
+          <Search size={16} className="absolute left-3 top-2.5 text-[#77DD77]" />
           <input
             type="text"
-            placeholder="Search by actor, target address, or details..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className="cyber-input pl-10 text-xs"
+            placeholder="Search by Actor, Target, or Action Details..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="cyber-input pl-9 text-xs font-mono"
           />
         </div>
 
-        {/* Category Buttons */}
-        <div className="flex flex-wrap gap-1 text-xs">
-          {['ALL', 'IDENTITY', 'MINT', 'LOCK', 'TRANSFER'].map(cat => (
-            <button
-              key={cat}
-              onClick={() => setCategoryFilter(cat)}
-              className={`px-3 py-1.5 border font-bold transition-all ${
-                categoryFilter === cat
-                  ? 'bg-[#77DD77] text-black border-[#77DD77]'
-                  : 'bg-black text-[#A0A0A0] border-[#333] hover:border-[#77DD77] hover:text-[#77DD77]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="w-full sm:w-64">
+          <select
+            value={actionFilter}
+            onChange={e => setActionFilter(e.target.value)}
+            className="cyber-input bg-black text-xs font-mono"
+          >
+            <option value="ALL">All Event Types</option>
+            <option value="SYSTEM_GENESIS">SYSTEM_GENESIS</option>
+            <option value="IDENTITY_REGISTERED">IDENTITY_REGISTERED</option>
+            <option value="ASSET_REGISTERED">ASSET_REGISTERED</option>
+            <option value="ASSET_LOCK_TOGGLED">ASSET_LOCK_TOGGLED</option>
+            <option value="ASSET_TRANSFERRED">ASSET_TRANSFERRED</option>
+          </select>
         </div>
       </div>
 
       {/* Audit Log Table */}
-      <div className="cyber-card border border-[#77DD77] space-y-4">
-        <div className="flex justify-between items-center border-b border-[#222] pb-3 text-xs text-[#A0A0A0]">
-          <div>
-            SHOWING <span className="text-[#77DD77] font-bold">{filteredLogs.length}</span> OF{' '}
-            <span className="text-white font-bold">{auditLogs.length}</span> IMMUTABLE EVENT RECORDS
-          </div>
-          <div className="flex items-center gap-1 text-[#77DD77]">
-            <ShieldCheck size={14} /> ZERO-KNOWLEDGE PROOF COMPLIANT
-          </div>
+      <div className="bg-black border border-[#77DD77] rounded-none p-6 shadow-[4px_4px_0px_#222222] space-y-4">
+        <div className="flex justify-between items-center border-b border-[#222222] pb-4">
+          <h2 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+            <Activity size={18} className="text-[#77DD77]" /> VERIFIED AUDIT RECORDS ({filteredLogs.length})
+          </h2>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border border-[#222222]">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="border-b border-[#333] text-[#A0A0A0] bg-[#0A0A0A]">
-                <th className="p-3">LOG ID</th>
-                <th className="p-3">TIMESTAMP</th>
-                <th className="p-3">EVENT CATEGORY</th>
-                <th className="p-3">ACTOR (INITIATOR)</th>
-                <th className="p-3">TARGET ADDRESS</th>
-                <th className="p-3">TRANSACTION DETAILS PAYLOAD</th>
+              <tr className="border-b border-[#222222] text-[#77DD77] bg-black font-bold uppercase tracking-wider text-[10px]">
+                <th className="p-3">ID</th>
+                <th className="p-3">Timestamp</th>
+                <th className="p-3">Action Event</th>
+                <th className="p-3">Actor Account</th>
+                <th className="p-3">Target Address</th>
+                <th className="p-3">Event Metadata</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#222]">
-              {filteredLogs.map(log => (
-                <tr key={log.id} className="hover:bg-[#080808]">
-                  <td className="p-3 font-bold text-[#77DD77]">#{log.id}</td>
-                  <td className="p-3 text-[#A0A0A0] font-mono text-[11px] whitespace-nowrap">
-                    {new Date(log.timestamp).toLocaleString()}
+            <tbody className="divide-y divide-[#222222] font-mono">
+              {filteredLogs.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="p-6 text-center text-[#A0A0A0]">
+                    No compliance audit logs match your search parameters.
                   </td>
-                  <td className="p-3">{getActionBadge(log.actionType)}</td>
-                  <td className="p-3 font-mono text-[#77DD77]">
-                    {log.actor.substring(0, 8)}...{log.actor.substring(36)}
-                  </td>
-                  <td className="p-3 font-mono text-[#A0A0A0]">
-                    {log.target && log.target !== '0x0000000000000000000000000000000000000000'
-                      ? `${log.target.substring(0, 8)}...${log.target.substring(36)}`
-                      : 'SYSTEM'}
-                  </td>
-                  <td className="p-3 text-white max-w-md leading-relaxed">{log.details}</td>
                 </tr>
-              ))}
+              ) : (
+                filteredLogs.map(log => (
+                  <tr key={log.id} className="hover:bg-[#111111] transition-colors">
+                    <td className="p-3 font-mono font-bold text-[#77DD77]">#{log.id}</td>
+                    <td className="p-3 text-[#A0A0A0] text-[11px] whitespace-nowrap">
+                      {new Date(log.timestamp).toLocaleString()}
+                    </td>
+                    <td className="p-3">
+                      <span className="cyber-badge">
+                        {log.actionType}
+                      </span>
+                    </td>
+                    <td className="p-3 text-white font-mono font-bold truncate max-w-[140px]">
+                      {log.actor.substring(0, 8)}...
+                    </td>
+                    <td className="p-3 text-[#A0A0A0] font-mono truncate max-w-[140px]">
+                      {log.target.substring(0, 8)}...
+                    </td>
+                    <td className="p-3 text-[#A0A0A0] max-w-md leading-relaxed">
+                      {log.details}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

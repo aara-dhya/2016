@@ -2,29 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
+  --font-sans: 'JetBrains Mono', 'Space Mono', monospace;
   --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
 }
 
+/* Global 0px Sharp Edge Rule */
 * {
-  box-sizing: border-box;
   border-radius: 0px !important;
 }
 
 body {
   background-color: #000000 !important;
   color: #FFFFFF !important;
-  font-family: var(--font-mono);
-  letter-spacing: 0.03em;
+  font-family: 'JetBrains Mono', 'Space Mono', monospace !important;
   margin: 0;
   padding: 0;
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.02em;
 }
 
-/* Custom Scrollbar for Terminal Aesthetic */
+/* Custom Terminal Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -34,50 +36,61 @@ body {
   border-left: 1px solid #222222;
 }
 ::-webkit-scrollbar-thumb {
-  background: #77DD77;
+  background: #222222;
+  border-radius: 0px !important;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #61D095;
+  background: #77DD77;
 }
 
-/* Hard Brutalist Buttons */
+/* Terminal Brutalism Primary Button */
 .btn-primary {
   background-color: #77DD77 !important;
   color: #000000 !important;
   font-weight: 700;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace !important;
   padding: 10px 20px;
+  border-radius: 0px !important;
   border: 2px solid #77DD77 !important;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 4px 4px 0px #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
 }
 
 .btn-primary:hover {
   background-color: #000000 !important;
   color: #77DD77 !important;
-  border: 2px solid #77DD77 !important;
+  border-color: #77DD77 !important;
   box-shadow: 4px 4px 0px #77DD77;
 }
 
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #77DD77;
+}
+
+/* Terminal Brutalism Secondary / Outline Button */
 .btn-secondary {
   background-color: #000000 !important;
   color: #77DD77 !important;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  padding: 10px 20px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace !important;
+  padding: 9px 18px;
+  border-radius: 0px !important;
   border: 2px solid #77DD77 !important;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 4px 4px 0px #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
 }
 
 .btn-secondary:hover {
@@ -86,69 +99,84 @@ body {
   box-shadow: 4px 4px 0px #77DD77;
 }
 
+.btn-secondary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #77DD77;
+}
+
+/* Danger Button */
 .btn-danger {
   background-color: #000000 !important;
-  color: #FF3333 !important;
+  color: #FF5555 !important;
   font-weight: 700;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-  padding: 10px 20px;
-  border: 2px solid #FF3333 !important;
-  transition: all 0.15s ease-in-out;
+  font-family: 'JetBrains Mono', monospace !important;
+  padding: 8px 16px;
+  border-radius: 0px !important;
+  border: 2px solid #FF5555 !important;
+  transition: all 0.15s ease;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
 }
 
 .btn-danger:hover {
-  background-color: #FF3333 !important;
+  background-color: #FF5555 !important;
   color: #000000 !important;
+  box-shadow: 4px 4px 0px #FF5555;
 }
 
-/* Brutalist Card Container */
+/* Terminal Brutalism Card Container */
 .cyber-card {
   background-color: #000000 !important;
   border: 1px solid #77DD77 !important;
+  border-radius: 0px !important;
   padding: 24px;
-  box-shadow: 4px 4px 0px #111111;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cyber-card:hover {
-  box-shadow: 4px 4px 0px #77DD77;
+  border-color: #77DD77 !important;
+  box-shadow: 4px 4px 0px rgba(119, 221, 119, 0.4);
 }
 
-.cyber-card-subtle {
-  background-color: #050505 !important;
-  border: 1px solid #222222 !important;
-  padding: 20px;
-}
-
-/* Brutalist Form Inputs */
+/* Form Inputs */
 .cyber-input {
-  background-color: #0A0A0A !important;
-  border: 1px solid #444444 !important;
-  color: #77DD77 !important;
-  font-family: var(--font-mono);
+  background-color: #000000 !important;
+  border: 1px solid #333333 !important;
+  color: #FFFFFF !important;
+  font-family: 'JetBrains Mono', monospace !important;
   padding: 10px 14px;
+  border-radius: 0px !important;
   outline: none;
   width: 100%;
-  transition: border-color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .cyber-input:focus {
   border: 2px solid #77DD77 !important;
-  background-color: #000000 !important;
+  background-color: #050505 !important;
 }
 
+/* Badge */
 .cyber-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  font-size: 0.7rem;
   font-weight: 700;
+  border-radius: 0px !important;
+  border: 1px solid #77DD77;
+  color: #77DD77;
+  background-color: #000000;
+  font-family: 'JetBrains Mono', monospace;
   text-transform: uppercase;
-  border: 1px solid #77DD77 !important;
-  color: #77DD77 !important;
-  background: #000000 !important;
+  letter-spacing: 0.05em;
+}
+
+.font-technical {
+  font-family: 'JetBrains Mono', monospace;
 }
