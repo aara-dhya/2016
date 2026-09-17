@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useWeb3, DEMO_PERSONAS, RoleType } from '../context/Web3Context';
-import { Shield, ShieldCheck, UserCheck, Eye, ChevronDown, QrCode, LogIn, PanelLeft } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Shield, ShieldCheck, UserCheck, Eye, ChevronDown, QrCode, LogIn, PanelLeft, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -22,6 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
   onLogout
 }) => {
   const { activePersona, switchPersona } = useWeb3();
+  const { theme, toggleTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const getPageTitle = () => {
@@ -29,17 +31,17 @@ export const Header: React.FC<HeaderProps> = ({
       case 'overview':
         return 'ENTERPRISE DASHBOARD';
       case 'directory':
-        return 'EMPLOYEE HR DIRECTORY & DIDS';
+        return 'EMPLOYEE HR DIRECTORY';
       case 'user':
         return 'ASSET CREDENTIALS VAULT';
       case 'webhooks':
-        return 'WEB2 API WEBHOOK RELAYER';
+        return 'WEB2 API RELAYER';
       case 'admin':
-        return 'ASSET REGISTRATION & RBAC GOVERNANCE';
+        return 'IDENTITY & ASSET REGISTRATION';
       case 'auditor':
-        return 'COMPLIANCE LEDGER & AUDIT LOGS';
+        return 'COMPLIANCE AUDIT LEDGER';
       default:
-        return 'NEXUS SECURITY ENCLAVE';
+        return 'NEXUS HR PLATFORM';
     }
   };
 
@@ -53,13 +55,13 @@ export const Header: React.FC<HeaderProps> = ({
         );
       case 'MANAGER':
         return (
-          <span className="bg-black text-[#61D095] font-bold px-2 py-0.5 rounded-none text-[10px] flex items-center gap-1 border border-[#61D095]">
+          <span className="bg-black text-[#77DD77] font-bold px-2 py-0.5 rounded-none text-[10px] flex items-center gap-1 border border-[#77DD77]">
             <UserCheck size={11} /> MANAGER
           </span>
         );
       case 'AUDITOR':
         return (
-          <span className="bg-black text-[#FFD166] font-bold px-2 py-0.5 rounded-none text-[10px] flex items-center gap-1 border border-[#FFD166]">
+          <span className="bg-black text-[#77DD77] font-bold px-2 py-0.5 rounded-none text-[10px] flex items-center gap-1 border border-[#77DD77]">
             <Eye size={11} /> AUDITOR
           </span>
         );
@@ -95,8 +97,27 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Right Controls: Telemetry, Verify Equipment, Profile Dropdown */}
-      <div className="flex items-center space-x-4">
+      {/* Right Controls: Theme Toggle, Telemetry, Verify Equipment, Profile Dropdown */}
+      <div className="flex items-center space-x-3 sm:space-x-4">
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-none bg-black border border-[#77DD77] text-[#77DD77] hover:bg-[#77DD77] hover:text-black transition-colors text-xs font-mono font-bold"
+        >
+          {theme === 'dark' ? (
+            <>
+              <Sun className="w-3.5 h-3.5" />
+              <span className="hidden md:inline uppercase text-[11px]">LIGHT MODE</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-3.5 h-3.5" />
+              <span className="hidden md:inline uppercase text-[11px]">DARK MODE</span>
+            </>
+          )}
+        </button>
+
         {/* Telemetry Status */}
         <div className="hidden lg:flex items-center space-x-2 px-3 py-1 rounded-none bg-black border border-[#222222] text-xs font-mono">
           <span className="w-2 h-2 rounded-none bg-[#77DD77] animate-pulse" />
@@ -144,7 +165,7 @@ export const Header: React.FC<HeaderProps> = ({
                     className={`p-2.5 rounded-none cursor-pointer transition-all mb-1 ${
                       activePersona.key === p.key
                         ? 'bg-[#77DD77] text-black font-bold border border-[#77DD77]'
-                        : 'hover:bg-[#111111] text-[#FFFFFF] hover:text-[#77DD77] border border-transparent hover:border-[#77DD77]/40'
+                        : 'hover:bg-[#111111] text-white hover:text-[#77DD77] border border-transparent hover:border-[#77DD77]/40'
                     }`}
                   >
                     <div className="flex justify-between items-center mb-1">

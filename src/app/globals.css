@@ -15,8 +15,8 @@
 }
 
 body {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
+  background-color: #000000;
+  color: #FFFFFF;
   font-family: 'JetBrains Mono', 'Space Mono', monospace !important;
   margin: 0;
   padding: 0;
@@ -180,3 +180,323 @@ body {
 .font-technical {
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* ==========================================================================
+   LIGHT MODE COMPLETE THEME SYSTEM (100% COVERAGE & HARMONY)
+   Requested Palette: #B984DF, #C095E4, #FCEDF2, #FFD1D4, #FFB7C5, #FFA0C5
+   Text Palette: #2A0835 (Primary), #8D36BE (Accent), #6C4A80 (Muted)
+   ========================================================================== */
+
+/* 1. Root & App Fills */
+html.light, 
+html.light body,
+body.light {
+  background-color: #FCEDF2 !important;
+  color: #2A0835 !important;
+  scrollbar-color: #FFB7C5 #FCEDF2;
+}
+
+html.light header,
+html.light aside {
+  background-color: #FFFFFF !important;
+  border-color: #FFD1D4 !important;
+}
+
+html.light footer {
+  background-color: #FFD1D4 !important;
+  border-color: #B984DF !important;
+  color: #2A0835 !important;
+}
+
+html.light footer div {
+  background-color: #FFD1D4 !important;
+}
+
+html.light footer .text-white {
+  color: #2A0835 !important;
+}
+
+html.light footer .text-\[\#77DD77\] {
+  color: #8D36BE !important;
+}
+
+/* 2. Global Containers & Black Box Overrides */
+html.light .bg-black,
+html.light button.bg-black,
+html.light div.bg-black,
+html.light span.bg-black,
+html.light section.bg-black,
+html.light main.bg-black {
+  background-color: #FFFFFF !important;
+  color: #2A0835 !important;
+}
+
+/* 3. Border Overrides & Divide Utilities */
+html.light .border-\[\#222222\],
+html.light div.border-\[\#222222\],
+html.light header.border-\[\#222222\],
+html.light aside.border-\[\#222222\],
+html.light footer.border-\[\#222222\] {
+  border-color: #FFD1D4 !important;
+}
+
+html.light .border-\[\#77DD77\],
+html.light button.border-\[\#77DD77\],
+html.light div.border-\[\#77DD77\],
+html.light span.border-\[\#77DD77\] {
+  border-color: #B984DF !important;
+}
+
+html.light .border-\[\#333333\] {
+  border-color: #FFB7C5 !important;
+}
+
+html.light .divide-\[\#222222\] > * + *,
+html.light .divide-y > * + * {
+  border-color: #FFD1D4 !important;
+}
+
+/* 4. Text & Accent Color Overrides */
+html.light .text-\[\#77DD77\],
+html.light .text-\[\#61D095\],
+html.light span.text-\[\#77DD77\] {
+  color: #8D36BE !important;
+}
+
+html.light .text-\[\#A0A0A0\],
+html.light span.text-\[\#A0A0A0\] {
+  color: #6C4A80 !important;
+}
+
+html.light .text-white,
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light .font-bold.text-white {
+  color: #2A0835 !important;
+}
+
+/* Inline Code Snippets */
+html.light code {
+  background-color: #FCEDF2 !important;
+  color: #8D36BE !important;
+  border-color: #FFD1D4 !important;
+}
+
+html.light code.text-white,
+html.light code.text-\[\#77DD77\] {
+  color: #8D36BE !important;
+}
+
+/* 5. Background Accents & Pulses */
+html.light .bg-\[\#77DD77\] {
+  background-color: #B984DF !important;
+  color: #FFFFFF !important;
+}
+
+html.light span.bg-\[\#77DD77\] {
+  background-color: #8D36BE !important;
+}
+
+html.light .bg-\[\#111111\] {
+  background-color: #FFD1D4 !important;
+}
+
+/* 6. Interactive Hover States */
+html.light .hover\:bg-\[\#111111\]:hover {
+  background-color: #FCEDF2 !important;
+  color: #8D36BE !important;
+}
+
+html.light .hover\:text-white:hover {
+  color: #2A0835 !important;
+}
+
+html.light .hover\:text-\[\#77DD77\]:hover {
+  color: #8D36BE !important;
+}
+
+html.light .hover\:bg-\[\#77DD77\]:hover {
+  background-color: #B984DF !important;
+  color: #FFFFFF !important;
+}
+
+/* 7. Buttons & Form Controls */
+html.light .btn-primary {
+  background-color: #B984DF !important;
+  color: #FFFFFF !important;
+  border-color: #B984DF !important;
+}
+
+html.light .btn-primary:hover {
+  background-color: #FCEDF2 !important;
+  color: #8D36BE !important;
+  border-color: #B984DF !important;
+  box-shadow: 4px 4px 0px #B984DF !important;
+}
+
+html.light .btn-secondary {
+  background-color: #FCEDF2 !important;
+  color: #8D36BE !important;
+  border-color: #B984DF !important;
+}
+
+html.light .btn-secondary:hover {
+  background-color: #B984DF !important;
+  color: #FFFFFF !important;
+  box-shadow: 4px 4px 0px #B984DF !important;
+}
+
+html.light .btn-danger {
+  background-color: #FFF0F2 !important;
+  color: #D32F2F !important;
+  border-color: #D32F2F !important;
+}
+
+html.light .btn-danger:hover {
+  background-color: #D32F2F !important;
+  color: #FFFFFF !important;
+  box-shadow: 4px 4px 0px #C62828 !important;
+}
+
+html.light .border-\[\#FF5555\],
+html.light div.border-\[\#FF5555\] {
+  border-color: #D32F2F !important;
+  background-color: #FFF0F2 !important;
+  color: #D32F2F !important;
+}
+
+html.light input[type="checkbox"] {
+  accent-color: #B984DF !important;
+}
+
+/* 8. Micro-Typography & Placeholders */
+html.light ::placeholder,
+html.light input::placeholder,
+html.light textarea::placeholder,
+html.light select::placeholder,
+html.light .cyber-input::placeholder {
+  color: #6C4A80 !important;
+  opacity: 0.75 !important;
+}
+
+html.light select option {
+  background-color: #FFFFFF !important;
+  color: #2A0835 !important;
+}
+
+/* 9. Modals & Translucent Backdrops */
+html.light .fixed.inset-0.bg-black\/90,
+html.light .fixed.inset-0.bg-black\/80,
+html.light div.fixed.inset-0 {
+  background-color: rgba(252, 237, 242, 0.85) !important;
+}
+
+html.light div.absolute.right-0,
+html.light .cyber-card {
+  background-color: #FFFFFF !important;
+  border-color: #B984DF !important;
+  color: #2A0835 !important;
+}
+
+html.light .cyber-card:hover {
+  border-color: #C095E4 !important;
+  box-shadow: 4px 4px 0px #B984DF !important;
+}
+
+/* 10. Badges & Form Controls */
+html.light .cyber-badge {
+  background-color: #FFD1D4 !important;
+  color: #2A0835 !important;
+  border-color: #B984DF !important;
+}
+
+html.light .cyber-input,
+html.light select.cyber-input,
+html.light input.cyber-input {
+  background-color: #FFFFFF !important;
+  border-color: #B984DF !important;
+  color: #2A0835 !important;
+}
+
+html.light .cyber-input:focus,
+html.light select.cyber-input:focus,
+html.light input.cyber-input:focus {
+  border-color: #C095E4 !important;
+  background-color: #FCEDF2 !important;
+}
+
+/* 11. Box Shadows Overrides */
+html.light .shadow-\[8px_8px_0px_\#77DD77\] {
+  box-shadow: 8px 8px 0px #B984DF !important;
+}
+
+html.light .shadow-\[6px_6px_0px_\#77DD77\] {
+  box-shadow: 6px 6px 0px #B984DF !important;
+}
+
+html.light .shadow-\[4px_4px_0px_\#77DD77\] {
+  box-shadow: 4px 4px 0px #B984DF !important;
+}
+
+html.light .shadow-\[4px_4px_0px_\#222222\] {
+  box-shadow: 4px 4px 0px #FFB7C5 !important;
+}
+
+html.light .shadow-\[3px_3px_0px_\#77DD77\] {
+  box-shadow: 3px 3px 0px #B984DF !important;
+}
+
+html.light .shadow-\[2px_2px_0px_\#FFFFFF\] {
+  box-shadow: 2px 2px 0px #2A0835 !important;
+}
+
+html.light .shadow-\[0px_-4px_0px_\#000000\] {
+  box-shadow: 0px -4px 0px #FFD1D4 !important;
+}
+
+html.light .shadow-\[4px_4px_0px_\#FF5555\] {
+  box-shadow: 4px 4px 0px #D32F2F !important;
+}
+
+/* 12. Tables */
+html.light table tr,
+html.light table th,
+html.light table td {
+  border-color: #FFD1D4 !important;
+}
+
+html.light table thead tr {
+  background-color: #FFD1D4 !important;
+}
+
+html.light table tbody tr:hover {
+  background-color: #FCEDF2 !important;
+}
+
+/* 13. Text Selection Highlights */
+html.light ::selection {
+  background-color: #FFB7C5 !important;
+  color: #2A0835 !important;
+}
+
+html.light ::-moz-selection {
+  background-color: #FFB7C5 !important;
+  color: #2A0835 !important;
+}
+
+/* 14. Scrollbars */
+html.light ::-webkit-scrollbar-track {
+  background: #FCEDF2;
+  border-left: 1px solid #FFD1D4;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #FFB7C5;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #B984DF;
+}
+

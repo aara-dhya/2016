@@ -78,7 +78,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ setActiveTab, onOpenSS
             <Layers className="w-4 h-4 text-[#77DD77] group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-3xl font-extrabold text-white mt-3 font-mono">{assets.length}</div>
-          <div className="text-[11px] text-[#A0A0A0] mt-1 font-mono uppercase tracking-wider">IT Credentials & Keys</div>
+          <div className="text-[11px] text-[#77DD77] font-bold mt-1 uppercase tracking-wider">IT Credentials & Keys</div>
         </div>
 
         {/* Metric 3 */}
@@ -90,7 +90,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ setActiveTab, onOpenSS
             <span>Soulbound Credentials</span>
             <Lock className="w-4 h-4 text-[#77DD77] group-hover:scale-110 transition-transform" />
           </div>
-          <div className="text-3xl font-extrabold text-[#77DD77] mt-3 font-mono">{totalLocked}</div>
+          <div className="text-3xl font-extrabold text-white mt-3 font-mono">{totalLocked}</div>
           <div className="text-[11px] text-[#77DD77] font-bold mt-1 uppercase tracking-wider">Non-Transferable Locked</div>
         </div>
 
@@ -104,7 +104,7 @@ export const LandingView: React.FC<LandingViewProps> = ({ setActiveTab, onOpenSS
             <Activity className="w-4 h-4 text-[#77DD77] group-hover:scale-110 transition-transform" />
           </div>
           <div className="text-3xl font-extrabold text-white mt-3 font-mono">{auditLogs.length}</div>
-          <div className="text-[11px] text-[#A0A0A0] mt-1 font-mono uppercase tracking-wider">Audit Trail Log Records</div>
+          <div className="text-[11px] text-[#77DD77] font-bold mt-1 uppercase tracking-wider">Audit Trail Log Records</div>
         </div>
       </div>
 

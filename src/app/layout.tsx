@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Web3Provider } from '../context/Web3Context';
+import { ThemeProvider } from '../context/ThemeContext';
 
 export const metadata: Metadata = {
   title: 'CYBER_ID // Enterprise Identity & Digital Asset Infrastructure',
@@ -15,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-black text-white font-mono antialiased">
-        <Web3Provider>
-          {children}
-        </Web3Provider>
+        <ThemeProvider>
+          <Web3Provider>
+            {children}
+          </Web3Provider>
+        </ThemeProvider>
       </body>
     </html>
   );
