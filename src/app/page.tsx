@@ -28,8 +28,6 @@ export default function Home() {
     const savedToken = localStorage.getItem('nexus_session_token');
     if (savedToken) {
       setSessionToken(savedToken);
-    } else {
-      setSessionToken('jwt_nexus_init_session');
     }
 
     const savedSidebar = localStorage.getItem('nexus_sidebar_collapsed');
