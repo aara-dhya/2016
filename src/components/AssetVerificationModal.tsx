@@ -42,7 +42,7 @@ export const AssetVerificationModal: React.FC<AssetVerificationModalProps> = ({
     setVerificationResult(null);
 
     try {
-      const res = await fetch(`http://localhost:5001/api/assets/verify/${encodeURIComponent(targetSN.trim())}`);
+      const res = await fetch(`/api/assets/verify/${encodeURIComponent(targetSN.trim())}`);
       const data = await res.json();
 
       if (res.ok && data.verified) {

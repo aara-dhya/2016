@@ -24,7 +24,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onOpenSSO 
 
     try {
       addTerminalLog(`[SIWE AUTH] Requesting cryptographic nonce for address ${address}...`);
-      const nonceRes = await fetch(`http://localhost:5001/api/auth/nonce?address=${address}`);
+      const nonceRes = await fetch(`/api/auth/nonce?address=${address}`);
       const nonceData = await nonceRes.json();
       const nonce = nonceRes.ok ? nonceData.nonce : 'nexus_nonce_' + Date.now();
 
@@ -32,7 +32,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onOpenSSO 
       
       const mockSignature = `0x98127391823791823918273918273918273918273918273918273918273918273918273918273918`;
 
-      const verifyRes = await fetch('http://localhost:5001/api/auth/verify', {
+      const verifyRes = await fetch('/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

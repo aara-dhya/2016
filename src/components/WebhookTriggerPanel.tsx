@@ -23,7 +23,7 @@ export const WebhookTriggerPanel: React.FC = () => {
 
   const fetchWebhookLogs = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/webhooks/logs');
+      const res = await fetch('/api/webhooks/logs');
       if (res.ok) {
         const data = await res.json();
         setLogs(data.logs || []);
@@ -44,7 +44,7 @@ export const WebhookTriggerPanel: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/webhooks/trigger', {
+      const res = await fetch('/api/webhooks/trigger', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

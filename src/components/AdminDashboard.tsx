@@ -65,7 +65,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onOpenSSO, onVer
     const metadataURI = nftIPFS || `ipfs://bafkreibaseassetmeta${Date.now()}`;
 
     try {
-      await fetch('http://localhost:5001/api/assets/issue', {
+      await fetch('/api/assets/issue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

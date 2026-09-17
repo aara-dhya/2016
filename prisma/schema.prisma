@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  email         String  @id
+  name          String
+  department    String
+  role          String
+  walletAddress String  @unique
+  did           String  @unique
+}
+
+model Asset {
+  serialNumber   String  @id
+  tokenId        Int     @unique
+  name           String
+  description    String
+  assetType      String
+  ownerEmail     String
+  ownerDID       String
+  isLocked       Boolean @default(true)
+  warrantyExpiry String
+  qrPayload      String
+}
+
+model WebhookLog {
+  id             Int     @id @default(autoincrement())
+  timestamp      String
+  triggerType    String
+  role           String
+  userEmail      String
+  actionExecuted String
+  status         String
+}
+
+model Nonce {
+  address String @id
+  nonce   String
+}
