@@ -4,7 +4,7 @@ import { Web3Provider } from '../context/Web3Context';
 import { ThemeProvider } from '../context/ThemeContext';
 
 export const metadata: Metadata = {
-  title: 'CYBER_ID // Enterprise Identity & Digital Asset Infrastructure',
+  title: 'Nexus',
   description: 'Enterprise SaaS dApp for W3C Decentralized Identifiers (DIDs), Role-Based Access Control (RBAC), and Soulbound Asset Management.',
 };
 
