@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useWeb3 } from '../context/Web3Context';
 import { 
   LayoutDashboard, 
@@ -32,14 +33,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const { activeRole } = useWeb3();
 
   const navItems = [
-    { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'directory', label: 'Identities & Directory', icon: Users },
-    { id: 'user', label: 'Asset Inventory', icon: Layers },
-    { id: 'webhooks', label: 'Web2 API Relayer', icon: Webhook },
+    { id: 'overview', href: '/home', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'directory', href: '/directory', label: 'Identities & Directory', icon: Users },
+    { id: 'user', href: '/user', label: 'Asset Inventory', icon: Layers },
+    { id: 'webhooks', href: '/webhooks', label: 'Web2 API Relayer', icon: Webhook },
     ...(activeRole === 'ADMIN' || activeRole === 'MANAGER'
-      ? [{ id: 'admin', label: 'Asset Registration & RBAC', icon: ShieldCheck }]
+      ? [{ id: 'admin', href: '/admin', label: 'Asset Registration & RBAC', icon: ShieldCheck }]
       : []),
-    { id: 'auditor', label: 'Compliance Audit', icon: Activity }
+    { id: 'auditor', href: '/auditor', label: 'Compliance Audit', icon: Activity }
   ];
 
   return (
@@ -63,8 +64,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           ) : (
             <>
-              <div
-                onClick={() => setActiveTab('overview')}
+              <Link
+                href="/home"
                 className="flex items-center space-x-3 cursor-pointer group overflow-hidden"
               >
                 <div className="w-9 h-9 rounded-none bg-black border border-[#77DD77] flex items-center justify-center text-[#77DD77] group-hover:bg-[#77DD77] group-hover:text-black transition-colors shrink-0">
@@ -74,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <h1 className="font-bold text-xs text-[#77DD77] tracking-wider uppercase leading-none">NEXUS // HR</h1>
                   <span className="text-[10px] text-[#A0A0A0] font-mono">v2.0 BRUTALIST</span>
                 </div>
-              </div>
+              </Link>
 
               <button
                 onClick={() => setCollapsed((prev: boolean) => !prev)}
@@ -91,11 +92,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <nav className="p-2 space-y-1 mt-2">
           {navItems.map(item => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            // activeTab from layout.tsx defaults to 'overview' if on /home
+            const isActive = activeTab === item.id || (activeTab === 'home' && item.id === 'overview');
             return (
-              <button
+              <Link
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                href={item.href}
                 title={collapsed ? item.label : undefined}
                 className={`w-full flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} px-3 py-2.5 rounded-none text-xs font-mono font-semibold transition-all ${
                   isActive
@@ -105,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               >
                 <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-black' : 'text-[#77DD77]'}`} />
                 {!collapsed && <span className="truncate uppercase tracking-wider text-[11px]">{item.label}</span>}
-              </button>
+              </Link>
             );
           })}
         </nav>

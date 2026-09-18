@@ -28,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const getPageTitle = () => {
     switch (activeTab) {
-      case 'overview':
+      case 'home':
         return 'ENTERPRISE DASHBOARD';
       case 'directory':
         return 'EMPLOYEE HR DIRECTORY';
