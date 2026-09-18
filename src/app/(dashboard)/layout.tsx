@@ -30,7 +30,15 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
 
     if (savedUser) {
       try {
-        setActivePersona(JSON.parse(savedUser));
+        const parsed = JSON.parse(savedUser);
+        setActivePersona({
+          key: parsed.email || parsed.key || 'user',
+          name: parsed.name || 'Unknown',
+          role: parsed.role || 'USER',
+          address: parsed.address || parsed.walletAddress || '0x0000000000000000000000000000000000000000',
+          did: parsed.did || 'did:nexus:user:0x000',
+          description: parsed.department || parsed.description || 'Enterprise User'
+        });
       } catch (e) {}
     }
     

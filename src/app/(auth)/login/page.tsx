@@ -22,8 +22,16 @@ export default function LoginPage() {
   const handleLoginSuccess = (token: string, user?: any) => {
     localStorage.setItem('nexus_session_token', token);
     if (user) {
-      localStorage.setItem('nexus_user_data', JSON.stringify(user));
-      setActivePersona(user);
+      const persona = {
+        key: user.email || user.key || 'user',
+        name: user.name || 'Unknown',
+        role: user.role || 'USER',
+        address: user.address || user.walletAddress || '0x0000000000000000000000000000000000000000',
+        did: user.did || 'did:nexus:user:0x000',
+        description: user.department || user.description || 'Enterprise User'
+      };
+      localStorage.setItem('nexus_user_data', JSON.stringify(persona));
+      setActivePersona(persona);
     }
     router.push('/home');
   };
