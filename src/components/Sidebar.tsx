@@ -72,8 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <Cpu className="w-5 h-5" />
                 </div>
                 <div className="truncate">
-                  <h1 className="font-bold text-xs text-[#77DD77] tracking-wider uppercase leading-none">NEXUS // HR</h1>
-                  <span className="text-[10px] text-[#A0A0A0] font-mono">v2.0 BRUTALIST</span>
+                  <h1 className="font-bold text-xs text-[#77DD77] tracking-wider uppercase leading-none mt-1">NEXUS // HR</h1>
                 </div>
               </Link>
 

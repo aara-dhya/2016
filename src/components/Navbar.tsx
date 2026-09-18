@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onOpenS
           </div>
           <div>
             <div className="font-bold text-base text-white flex items-center gap-2 font-mono tracking-wider">
-              NEXUS <span className="text-xs bg-black text-[#77DD77] font-mono px-2 py-0.5 border border-[#77DD77]">v2.0 BRUTALIST</span>
+              NEXUS
             </div>
             <div className="text-[10px] text-[#A0A0A0] font-mono">
               HR IDENTITY & IT ASSET MANAGER
