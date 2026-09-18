@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useWeb3 } from '../context/Web3Context';
-import { ShieldCheck, Cpu, ArrowRight, Key, Mail } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { ShieldCheck, Cpu, ArrowRight, Key, Mail, Sun, Moon } from 'lucide-react';
 
 interface LoginViewProps {
   onLoginSuccess: (token: string, user: any) => void;
@@ -9,6 +10,7 @@ interface LoginViewProps {
 
 export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onOpenSSO }) => {
   const { addTerminalLog, identities } = useWeb3();
+  const { theme, toggleTheme } = useTheme();
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -73,6 +75,28 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onOpenSSO 
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 relative font-mono select-none">
+      
+      {/* Theme Toggle Button Top Right */}
+      <div className="absolute top-4 right-4">
+        <button
+          onClick={toggleTheme}
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-none bg-black border border-[#77DD77] text-[#77DD77] hover:bg-[#77DD77] hover:text-black transition-colors text-xs font-mono font-bold"
+        >
+          {theme === 'dark' ? (
+            <>
+              <Sun className="w-3.5 h-3.5" />
+              <span className="hidden md:inline uppercase text-[11px]">LIGHT MODE</span>
+            </>
+          ) : (
+            <>
+              <Moon className="w-3.5 h-3.5" />
+              <span className="hidden md:inline uppercase text-[11px]">DARK MODE</span>
+            </>
+          )}
+        </button>
+      </div>
+
       <div className="bg-black border-2 border-[#77DD77] rounded-none p-8 max-w-md w-full shadow-[8px_8px_0px_#77DD77] relative z-10 space-y-8">
         
         {/* Top Header Logo */}
