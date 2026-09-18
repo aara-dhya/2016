@@ -107,153 +107,19 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     setSelectedIPFSURI(null);
   };
 
-  const loadInitialMockData = () => {
-    const mockIdentities: IdentityData[] = [
-      {
-        did: 'did:cyber:admin:0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-        walletAddress: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-        name: 'Cyber System Administrator',
-        metadataURI: 'ipfs://bafkreididproofadmin001',
-        isRegistered: true,
-        isRevoked: false,
-        createdAt: Date.now() - 86400000 * 5,
-        assignedRole: 'ADMIN_ROLE'
-      },
-      {
-        did: 'did:cyber:manager:0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        walletAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        name: 'Asset & Identity Officer',
-        metadataURI: 'ipfs://bafkreididproofmanager002',
-        isRegistered: true,
-        isRevoked: false,
-        createdAt: Date.now() - 86400000 * 4,
-        assignedRole: 'MANAGER_ROLE'
-      },
-      {
-        did: 'did:cyber:auditor:0x90F79bf6EB2c4f8080653A214d5A230128c7c9ec',
-        walletAddress: '0x90F79bf6EB2c4f8080653A214d5A230128c7c9ec',
-        name: 'Chief Compliance Auditor',
-        metadataURI: 'ipfs://bafkreididproofauditor003',
-        isRegistered: true,
-        isRevoked: false,
-        createdAt: Date.now() - 86400000 * 3,
-        assignedRole: 'AUDITOR_ROLE'
-      },
-      {
-        did: 'did:cyber:user:0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        walletAddress: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        name: 'Alice Vance (Operator 01)',
-        metadataURI: 'ipfs://bafkreididproofalice004',
-        isRegistered: true,
-        isRevoked: false,
-        createdAt: Date.now() - 86400000 * 2,
-        assignedRole: 'USER_ROLE'
-      },
-      {
-        did: 'did:cyber:user:0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-        walletAddress: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-        name: 'Bob Stone (Operator 02)',
-        metadataURI: 'ipfs://bafkreididproofbob005',
-        isRegistered: true,
-        isRevoked: false,
-        createdAt: Date.now() - 86400000 * 1,
-        assignedRole: 'USER_ROLE'
-      }
-    ];
-
-    const mockAssets: AssetData[] = [
-      {
-        tokenId: 1,
-        name: 'Titan Security Key v5',
-        description: 'High-assurance YubiKey-compat Cryptographic Hardware Enclave with Quantum-resistant Signature Module.',
-        serialNumber: 'SN-TITAN-9012-CYBER',
-        issuanceDate: Date.now() - 86400000 * 2,
-        assetType: 'Hardware Security Module',
-        isLocked: true,
-        ownerDID: 'did:cyber:user:0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        creator: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        ownerAddress: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65'
-      },
-      {
-        tokenId: 2,
-        name: 'Level-4 Quantum Node Pass',
-        description: 'Transferable High-Throughput Node Routing Clearance for Cyber Grid Network Alpha.',
-        serialNumber: 'SN-PASS-4410-ALPHA',
-        issuanceDate: Date.now() - 86400000 * 1.5,
-        assetType: 'Access Credentials',
-        isLocked: false,
-        ownerDID: 'did:cyber:user:0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        creator: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        ownerAddress: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65'
-      },
-      {
-        tokenId: 3,
-        name: 'Vault Locker #88 Ownership Certificate',
-        description: 'Physical Vault Locker tokenization certificate for High-Density Storage Vault in Neo-City Enclave.',
-        serialNumber: 'SN-VAULT-88-CERT',
-        issuanceDate: Date.now() - 86400000 * 1,
-        assetType: 'Physical Asset Token',
-        isLocked: true,
-        ownerDID: 'did:cyber:user:0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-        creator: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        ownerAddress: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc'
-      }
-    ];
-
-    const mockAuditLogs: AuditLogData[] = [
-      {
-        id: 1,
-        timestamp: Date.now() - 86400000 * 5,
-        actionType: 'SYSTEM_GENESIS',
-        actor: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-        target: '0x0000000000000000000000000000000000000000',
-        details: 'RoleAccessControl and IdentityRegistry initialized on system registry.'
-      },
-      {
-        id: 2,
-        timestamp: Date.now() - 86400000 * 4,
-        actionType: 'IDENTITY_REGISTERED',
-        actor: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-        target: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        details: 'Registered MANAGER_ROLE for Asset & Identity Officer.'
-      },
-      {
-        id: 3,
-        timestamp: Date.now() - 86400000 * 3,
-        actionType: 'IDENTITY_REGISTERED',
-        actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        target: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        details: 'Registered DID did:cyber:user:0x15d34AAf... for Alice Vance.'
-      },
-      {
-        id: 4,
-        timestamp: Date.now() - 86400000 * 2,
-        actionType: 'ASSET_REGISTERED',
-        actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        target: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        details: 'Registered Asset Credential #1 (Titan Security Key v5) for Alice Vance.'
-      },
-      {
-        id: 5,
-        timestamp: Date.now() - 86400000 * 1.5,
-        actionType: 'ASSET_REGISTERED',
-        actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        target: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-        details: 'Registered Transferable Asset #2 (Level-4 Quantum Node Pass) for Alice Vance.'
-      },
-      {
-        id: 6,
-        timestamp: Date.now() - 86400000 * 1,
-        actionType: 'ASSET_REGISTERED',
-        actor: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-        target: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-        details: 'Registered Asset Credential #3 (Vault Locker #88 Ownership Certificate) for Bob Stone.'
-      }
-    ];
-
-    setIdentities(mockIdentities);
-    setAssets(mockAssets);
-    setAuditLogs(mockAuditLogs);
+  const loadInitialMockData = async () => {
+    try {
+      const res = await fetch('/api/state');
+      const data = await res.json();
+      setIdentities(data.identities || []);
+      setAssets(data.assets || []);
+      setAuditLogs(data.auditLogs || []);
+    } catch (err) {
+      console.error('Failed to load state', err);
+      setIdentities([]);
+      setAssets([]);
+      setAuditLogs([]);
+    }
   };
 
   useEffect(() => {
