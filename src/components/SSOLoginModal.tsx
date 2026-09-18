@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useWeb3 } from '../context/Web3Context';
-import { ShieldCheck, X, Mail } from 'lucide-react';
+import { ShieldCheck, X, Mail, Code, ExternalLink } from 'lucide-react';
 
 interface SSOLoginModalProps {
   isOpen: boolean;
@@ -14,8 +14,11 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [department, setDepartment] = useState('Core Engineering');
+  const [developerMode, setDeveloperMode] = useState(false);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [devMagicLink, setDevMagicLink] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -24,16 +27,24 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
     if (!email) return;
 
     setIsLoading(true);
+    setDevMagicLink(null);
     try {
       const response = await fetch('/api/auth/sso-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name: name || email.split('@')[0], department })
+        body: JSON.stringify({ email, name: name || email.split('@')[0], department, developerMode })
       });
 
       if (response.ok) {
-        setEmailSent(true);
-        addTerminalLog(`[SSO ONBOARDING] Dispatched cryptographic magic link to ${email}.`);
+        const data = await response.json();
+        
+        if (data.status === 'DEVELOPER_BYPASS') {
+          setDevMagicLink(data.magicLinkUrl);
+          addTerminalLog(`[DEV BYPASS] Generated local magic link for ${email}. Email dispatch skipped.`);
+        } else {
+          setEmailSent(true);
+          addTerminalLog(`[SSO ONBOARDING] Dispatched cryptographic magic link to ${email}.`);
+        }
       } else {
         const errData = await response.json();
         addTerminalLog(`[SSO ERROR] Failed to dispatch email: ${errData.error}`);
@@ -67,7 +78,28 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
           </button>
         </div>
 
-        {!emailSent ? (
+        {devMagicLink ? (
+          <div className="space-y-4 font-mono text-center py-4">
+            <Code className="w-12 h-12 text-[#FFB86C] mx-auto mb-2" />
+            <h4 className="text-sm font-bold text-[#FFB86C] uppercase">DEV MODE BYPASS ACTIVE</h4>
+            <p className="text-xs text-[#A0A0A0]">
+              The email dispatch was securely bypassed.
+            </p>
+            <div className="bg-black border border-[#FFB86C] p-4 text-left my-4">
+              <span className="text-[#FFB86C] text-[10px] font-bold block mb-2 uppercase">// RAW MAGIC LINK URL</span>
+              <code className="text-[#A0A0A0] text-[10px] break-all select-all block">
+                {devMagicLink}
+              </code>
+            </div>
+            <a
+              href={devMagicLink}
+              className="w-full bg-[#FFB86C] hover:bg-white text-black font-bold uppercase tracking-wider text-xs py-3 flex items-center justify-center transition-colors"
+            >
+              <span>CLICK TO AUTHENTICATE</span>
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </a>
+          </div>
+        ) : !emailSent ? (
           <form onSubmit={handleSSOLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-[#77DD77] uppercase mb-1">Corporate Email Address *</label>
@@ -105,12 +137,32 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
                 <option value="Executive Enclave">Executive Enclave</option>
               </select>
             </div>
+            
+            {/* Developer Mode Toggle */}
+            <div className="flex items-center space-x-2 pt-2 pb-1">
+              <input 
+                type="checkbox" 
+                id="devMode" 
+                checked={developerMode}
+                onChange={(e) => setDeveloperMode(e.target.checked)}
+                className="w-4 h-4 accent-[#FFB86C] bg-black border-[#FFB86C]"
+              />
+              <label htmlFor="devMode" className="text-[10px] font-bold text-[#FFB86C] uppercase cursor-pointer flex items-center">
+                <Code className="w-3 h-3 mr-1" />
+                Enable Developer Mode Bypass
+              </label>
+            </div>
 
-            <div className="bg-black rounded-none p-3 border border-[#333333] text-[11px] text-[#A0A0A0] space-y-1 font-mono">
-              <div className="flex items-center text-[#77DD77] font-bold uppercase space-x-1">
-                <span>// SECURE MAGIC LINK</span>
+            <div className={`bg-black rounded-none p-3 border text-[11px] space-y-1 font-mono ${developerMode ? 'border-[#FFB86C]' : 'border-[#333333]'}`}>
+              <div className={`flex items-center font-bold uppercase space-x-1 ${developerMode ? 'text-[#FFB86C]' : 'text-[#77DD77]'}`}>
+                <span>{developerMode ? '// BYPASS ACTIVE' : '// SECURE MAGIC LINK'}</span>
               </div>
-              <p>You will receive a secure email containing a cryptographic token. Clicking the link will authenticate your session.</p>
+              <p className="text-[#A0A0A0]">
+                {developerMode 
+                  ? "Email dispatch will be disabled. The raw cryptographic token will be displayed directly on the screen."
+                  : "You will receive a secure email containing a cryptographic token. Clicking the link will authenticate your session."
+                }
+              </p>
             </div>
 
             <div className="flex space-x-3 pt-2">
@@ -124,9 +176,13 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex-1 btn-primary justify-center text-xs"
+                className={`flex-1 justify-center text-xs font-bold uppercase tracking-wider py-2 transition-colors ${
+                  developerMode 
+                    ? 'bg-[#FFB86C] hover:bg-white text-black' 
+                    : 'bg-[#77DD77] hover:bg-white text-black'
+                }`}
               >
-                {isLoading ? <span>DISPATCHING...</span> : <span>SEND MAGIC LINK</span>}
+                {isLoading ? <span>GENERATING...</span> : <span>{developerMode ? 'GENERATE LINK' : 'SEND MAGIC LINK'}</span>}
               </button>
             </div>
           </form>

@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, name, department } = body;
+    const { email, name, department, developerMode } = body;
 
     if (!email) {
       return NextResponse.json({ error: 'Email is required for corporate SSO authentication' }, { status: 400 });
@@ -33,7 +33,16 @@ export async function POST(request: Request) {
     const origin = request.headers.get('origin') || 'http://localhost:3000';
     const magicLinkUrl = `${origin}/verify?token=${token}`;
 
-    // Send Email
+    if (developerMode) {
+      // DEV BYPASS: Return the magic link directly in the response
+      return NextResponse.json({
+        status: 'DEVELOPER_BYPASS',
+        message: 'Developer mode activated. Email dispatch skipped.',
+        magicLinkUrl
+      });
+    }
+
+    // Send Real Email
     const data = await resend.emails.send({
       from: 'Nexus Security Enclave <onboarding@resend.dev>',
       to: email.toLowerCase(),
