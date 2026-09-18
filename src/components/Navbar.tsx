@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useWeb3, DEMO_PERSONAS, RoleType } from '../context/Web3Context';
+import { useWeb3, RoleType } from '../context/Web3Context';
 import { Shield, ShieldCheck, UserCheck, Eye, ChevronDown, Cpu, LogIn, QrCode, Users, Webhook } from 'lucide-react';
 
 interface NavbarProps {
@@ -12,7 +12,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onOpenSSO, onOpenVerify }) => {
-  const { activePersona, switchPersona } = useWeb3();
+  const { activePersona } = useWeb3();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const getRoleBadge = (role: RoleType) => {
@@ -166,30 +166,11 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onOpenS
           {dropdownOpen && (
             <div className="absolute right-0 top-12 w-80 bg-black border-2 border-[#77DD77] shadow-[6px_6px_0px_#77DD77] z-50 p-2 text-xs font-mono">
               <div className="text-[10px] text-[#77DD77] font-bold uppercase px-3 py-2 border-b border-[#222222]">
-                AUTHENTICATE SESSION PERSONA
+                SESSION DETAILS
               </div>
-              {DEMO_PERSONAS.map(p => (
-                <div
-                  key={p.key}
-                  onClick={() => {
-                    switchPersona(p.key);
-                    setDropdownOpen(false);
-                  }}
-                  className={`p-2.5 cursor-pointer transition-all mb-1 ${
-                    activePersona.key === p.key
-                      ? 'bg-[#77DD77] text-black font-bold'
-                      : 'hover:bg-[#111111] text-white hover:text-[#77DD77]'
-                  }`}
-                >
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="font-bold">{p.name}</span>
-                    {getRoleBadge(p.role)}
-                  </div>
-                  <div className="text-[10px] font-mono truncate opacity-80">
-                    {p.address}
-                  </div>
-                </div>
-              ))}
+              <div className="p-2.5">
+                <div className="text-white">Active session is bound to this persona.</div>
+              </div>
             </div>
           )}
         </div>

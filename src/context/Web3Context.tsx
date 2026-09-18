@@ -47,53 +47,19 @@ export interface Persona {
   description: string;
 }
 
-export const DEMO_PERSONAS: Persona[] = [
-  {
-    key: 'admin',
-    name: 'SysAdmin Enclave',
-    role: 'ADMIN',
-    address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-    did: 'did:cyber:admin:0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
-    description: 'System Administrator - Full Access, RBAC & Security Controls'
-  },
-  {
-    key: 'manager',
-    name: 'Asset & Identity Officer',
-    role: 'MANAGER',
-    address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-    did: 'did:cyber:manager:0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
-    description: 'Asset Manager - Identity Provisioning & Asset Registration'
-  },
-  {
-    key: 'auditor',
-    name: 'Chief Compliance Auditor',
-    role: 'AUDITOR',
-    address: '0x90F79bf6EB2c4f8080653A214d5A230128c7c9ec',
-    did: 'did:cyber:auditor:0x90F79bf6EB2c4f8080653A214d5A230128c7c9ec',
-    description: 'Compliance Auditor - Read-Only Global Immutable Ledger Access'
-  },
-  {
-    key: 'user1',
-    name: 'Alice Vance (Operator 01)',
-    role: 'USER',
-    address: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-    did: 'did:cyber:user:0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
-    description: 'Corporate User - Holds Hardware Security Key & Clearance Pass'
-  },
-  {
-    key: 'user2',
-    name: 'Bob Stone (Operator 02)',
-    role: 'USER',
-    address: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-    did: 'did:cyber:user:0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
-    description: 'Corporate User - Holds Vault Ownership Certificate'
-  }
-];
+export const BLANK_PERSONA: Persona = {
+  key: 'sysadmin',
+  name: 'System Admin',
+  role: 'ADMIN',
+  address: '0x0000000000000000000000000000000000000000',
+  did: 'did:nexus:sysadmin:0x000',
+  description: 'System Administrator'
+};
 
 interface Web3ContextType {
   account: string;
   activePersona: Persona;
-  switchPersona: (personaKey: string) => void;
+  setActivePersona: (persona: Persona) => void;
   activeRole: RoleType;
   identities: IdentityData[];
   assets: AssetData[];
@@ -116,7 +82,7 @@ interface Web3ContextType {
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
 export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [activePersona, setActivePersona] = useState<Persona>(DEMO_PERSONAS[0]);
+  const [activePersona, setActivePersona] = useState<Persona>(BLANK_PERSONA);
   const [identities, setIdentities] = useState<IdentityData[]>([]);
   const [assets, setAssets] = useState<AssetData[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLogData[]>([]);
@@ -124,7 +90,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
     '[SYSTEM] Enterprise SaaS Security Enclave initialized.',
     '[NETWORK] Connected to Local Ledger (ChainID: 31337).',
-    `[AUTH] Authenticated Session: ${DEMO_PERSONAS[0].name} (${DEMO_PERSONAS[0].role})`
+    '[AUTH] Awaiting Authentication...'
   ]);
   const [selectedIPFSURI, setSelectedIPFSURI] = useState<string | null>(null);
 
@@ -294,13 +260,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     loadInitialMockData();
   }, []);
 
-  const switchPersona = (personaKey: string) => {
-    const found = DEMO_PERSONAS.find(p => p.key === personaKey);
-    if (found) {
-      setActivePersona(found);
-      addTerminalLog(`Switched active session to ${found.name} (${found.role})`);
-    }
-  };
+  // switchPersona function has been removed. Active persona is set via login in page.tsx
 
   const registerIdentity = async (
     wallet: string,
@@ -514,7 +474,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{
         account: activePersona.address,
         activePersona,
-        switchPersona,
+        setActivePersona,
         activeRole: activePersona.role,
         identities,
         assets,

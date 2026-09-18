@@ -14,8 +14,10 @@ import { SSOLoginModal } from '../components/SSOLoginModal';
 import { AssetVerificationModal } from '../components/AssetVerificationModal';
 import { IPFSModal } from '../components/IPFSModal';
 import { TerminalFooter } from '../components/TerminalFooter';
+import { useWeb3 } from '../context/Web3Context';
 
 export default function Home() {
+  const { setActivePersona } = useWeb3();
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
@@ -44,9 +46,12 @@ export default function Home() {
     });
   };
 
-  const handleLoginSuccess = (token: string) => {
+  const handleLoginSuccess = (token: string, user?: any) => {
     localStorage.setItem('nexus_session_token', token);
     setSessionToken(token);
+    if (user) {
+      setActivePersona(user);
+    }
   };
 
   const handleLogout = () => {
@@ -70,10 +75,7 @@ export default function Home() {
         />
         <SSOLoginModal
           isOpen={isSSOOpen}
-          onClose={() => {
-            setIsSSOOpen(false);
-            if (!sessionToken) setSessionToken('jwt_sso_authenticated');
-          }}
+          onClose={() => setIsSSOOpen(false)}
         />
       </>
     );

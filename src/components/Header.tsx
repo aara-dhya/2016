@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useWeb3, DEMO_PERSONAS, RoleType } from '../context/Web3Context';
+import { useWeb3, RoleType } from '../context/Web3Context';
 import { useTheme } from '../context/ThemeContext';
 import { Shield, ShieldCheck, UserCheck, Eye, ChevronDown, QrCode, LogIn, PanelLeft, Sun, Moon } from 'lucide-react';
 
@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenVerify,
   onLogout
 }) => {
-  const { activePersona, switchPersona } = useWeb3();
+  const { activePersona } = useWeb3();
   const { theme, toggleTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -151,36 +151,8 @@ export const Header: React.FC<HeaderProps> = ({
 
           {dropdownOpen && (
             <div className="absolute right-0 top-12 w-80 bg-black border-2 border-[#77DD77] rounded-none shadow-[6px_6px_0px_#77DD77] z-50 p-2 text-xs font-mono">
-              <div className="text-[10px] text-[#77DD77] font-bold uppercase px-3 py-2 border-b border-[#222222] tracking-wider">
-                AUTHENTICATE SESSION PERSONA
-              </div>
-              <div className="py-1">
-                {DEMO_PERSONAS.map(p => (
-                  <div
-                    key={p.key}
-                    onClick={() => {
-                      switchPersona(p.key);
-                      setDropdownOpen(false);
-                    }}
-                    className={`p-2.5 rounded-none cursor-pointer transition-all mb-1 ${
-                      activePersona.key === p.key
-                        ? 'bg-[#77DD77] text-black font-bold border border-[#77DD77]'
-                        : 'hover:bg-[#111111] text-white hover:text-[#77DD77] border border-transparent hover:border-[#77DD77]/40'
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-bold">{p.name}</span>
-                      {getRoleBadge(p.role)}
-                    </div>
-                    <div className="text-[10px] font-mono truncate opacity-80">
-                      {p.address}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
               {onLogout && (
-                <div className="border-t border-[#222222] pt-1 mt-1">
+                <div className="pt-1">
                   <button
                     onClick={() => {
                       setDropdownOpen(false);

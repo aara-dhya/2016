@@ -8,7 +8,7 @@ interface LoginViewProps {
 }
 
 export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onOpenSSO }) => {
-  const { addTerminalLog, switchPersona, identities } = useWeb3();
+  const { addTerminalLog, identities } = useWeb3();
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
