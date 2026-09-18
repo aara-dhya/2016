@@ -25,11 +25,16 @@ export default function Home() {
   const [isVerifyOpen, setIsVerifyOpen] = useState<boolean>(false);
   const [verifySN, setVerifySN] = useState<string>('');
 
-  // Check stored session token and sidebar preference on mount
   useEffect(() => {
     const savedToken = localStorage.getItem('nexus_session_token');
+    const savedUser = localStorage.getItem('nexus_user_data');
     if (savedToken) {
       setSessionToken(savedToken);
+    }
+    if (savedUser) {
+      try {
+        setActivePersona(JSON.parse(savedUser));
+      } catch (e) {}
     }
 
     const savedSidebar = localStorage.getItem('nexus_sidebar_collapsed');
@@ -50,12 +55,14 @@ export default function Home() {
     localStorage.setItem('nexus_session_token', token);
     setSessionToken(token);
     if (user) {
+      localStorage.setItem('nexus_user_data', JSON.stringify(user));
       setActivePersona(user);
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('nexus_session_token');
+    localStorage.removeItem('nexus_user_data');
     setSessionToken(null);
   };
 
