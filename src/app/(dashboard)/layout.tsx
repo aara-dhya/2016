@@ -51,7 +51,11 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   }, [router, setActivePersona]);
 
   if (isAuthenticated === null) {
-    return <div className="h-screen w-screen bg-black" />; // Loading state
+    return (
+      <div className="h-screen w-screen bg-black flex items-center justify-center">
+        <div className="hidden">{children}</div>
+      </div>
+    );
   }
 
   const handleSetSidebarCollapsed = (value: boolean | ((prev: boolean) => boolean)) => {
