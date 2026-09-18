@@ -44,3 +44,13 @@ model Nonce {
   address String @id
   nonce   String
 }
+
+model MagicLink {
+  id         String   @id @default(cuid())
+  email      String
+  name       String?
+  department String?
+  token      String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+}

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useWeb3 } from '../context/Web3Context';
-import { ShieldCheck, X } from 'lucide-react';
+import { ShieldCheck, X, Mail } from 'lucide-react';
 
 interface SSOLoginModalProps {
   isOpen: boolean;
@@ -10,17 +10,12 @@ interface SSOLoginModalProps {
 }
 
 export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose }) => {
-  const { registerIdentity, addTerminalLog } = useWeb3();
+  const { addTerminalLog } = useWeb3();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [department, setDepartment] = useState('Core Engineering');
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionData, setSessionData] = useState<{
-    email: string;
-    walletAddress: string;
-    did: string;
-    sessionToken: string;
-  } | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
 
   if (!isOpen) return null;
 
@@ -36,44 +31,16 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
         body: JSON.stringify({ email, name: name || email.split('@')[0], department })
       });
 
-      let resData;
       if (response.ok) {
-        resData = await response.json();
+        setEmailSent(true);
+        addTerminalLog(`[SSO ONBOARDING] Dispatched cryptographic magic link to ${email}.`);
       } else {
-        const mockHash = Array.from(email).reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) >>> 0, 0).toString(16).padStart(40, '0');
-        const custodialWallet = '0x' + mockHash.substring(0, 40);
-        resData = {
-          status: 'AUTHENTICATED',
-          sessionToken: 'sso_token_' + Date.now(),
-          user: {
-            email: email.toLowerCase(),
-            name: name || email.split('@')[0],
-            department,
-            role: 'USER',
-            walletAddress: custodialWallet,
-            did: `did:nexus:user:${custodialWallet}`
-          }
-        };
+        const errData = await response.json();
+        addTerminalLog(`[SSO ERROR] Failed to dispatch email: ${errData.error}`);
       }
-
-      setSessionData({
-        email: resData.user.email,
-        walletAddress: resData.user.walletAddress,
-        did: resData.user.did,
-        sessionToken: resData.sessionToken
-      });
-
-      await registerIdentity(
-        resData.user.walletAddress,
-        resData.user.name,
-        `ipfs://bafkreibackendssoproof_${Date.now()}`,
-        'USER'
-      );
-
-      addTerminalLog(`[SSO ONBOARDING] Authenticated user ${email} via Account Abstraction. Custodial Wallet: ${resData.user.walletAddress}`);
     } catch (err: any) {
       console.error('SSO Login error:', err);
-      addTerminalLog(`[SSO ERROR] Authentication failed: ${err.message || 'Network error'}`);
+      addTerminalLog(`[SSO ERROR] Network error during SSO dispatch.`);
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +67,7 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
           </button>
         </div>
 
-        {!sessionData ? (
+        {!emailSent ? (
           <form onSubmit={handleSSOLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-[#77DD77] uppercase mb-1">Corporate Email Address *</label>
@@ -141,9 +108,9 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
 
             <div className="bg-black rounded-none p-3 border border-[#333333] text-[11px] text-[#A0A0A0] space-y-1 font-mono">
               <div className="flex items-center text-[#77DD77] font-bold uppercase space-x-1">
-                <span>// ZERO WALLET JARGON</span>
+                <span>// SECURE MAGIC LINK</span>
               </div>
-              <p>Account Abstraction generates a non-custodial smart identity bound to your corporate SSO credentials automatically.</p>
+              <p>You will receive a secure email containing a cryptographic token. Clicking the link will authenticate your session.</p>
             </div>
 
             <div className="flex space-x-3 pt-2">
@@ -159,42 +126,26 @@ export const SSOLoginModal: React.FC<SSOLoginModalProps> = ({ isOpen, onClose })
                 disabled={isLoading}
                 className="flex-1 btn-primary justify-center text-xs"
               >
-                {isLoading ? <span>AUTHENTICATING...</span> : <span>SIGN IN WITH SSO</span>}
+                {isLoading ? <span>DISPATCHING...</span> : <span>SEND MAGIC LINK</span>}
               </button>
             </div>
           </form>
         ) : (
-          <div className="space-y-4 font-mono">
-            <div className="p-3 bg-black border border-[#77DD77] rounded-none flex items-center space-x-3">
-              <div className="w-7 h-7 bg-[#77DD77] text-black font-extrabold flex items-center justify-center text-xs">
-                ✓
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-[#77DD77] uppercase">SESSION PROVISIONED</h4>
-                <p className="text-[11px] text-[#A0A0A0]">{sessionData.email}</p>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-[11px]">
-              <div>
-                <span className="text-[#A0A0A0] block mb-0.5 uppercase">// CUSTODIAL WALLET:</span>
-                <code className="block bg-black p-2 rounded-none border border-[#77DD77] text-[#77DD77] font-mono select-all break-all text-[10px]">
-                  {sessionData.walletAddress}
-                </code>
-              </div>
-              <div>
-                <span className="text-[#A0A0A0] block mb-0.5 uppercase">// DECENTRALIZED IDENTIFIER (DID):</span>
-                <code className="block bg-black p-2 rounded-none border border-[#77DD77] text-white font-mono select-all break-all text-[10px]">
-                  {sessionData.did}
-                </code>
-              </div>
-            </div>
-
+          <div className="space-y-4 font-mono text-center py-4">
+            <Mail className="w-12 h-12 text-[#77DD77] mx-auto mb-2" />
+            <h4 className="text-sm font-bold text-[#77DD77] uppercase">MAGIC LINK DISPATCHED</h4>
+            <p className="text-xs text-[#A0A0A0]">
+              We have securely dispatched a cryptographic token to <br/>
+              <strong className="text-white">{email}</strong>
+            </p>
+            <p className="text-xs text-[#A0A0A0] mt-2 border border-[#333333] p-3">
+              Please check your inbox. Clicking the link in the email will automatically authenticate this session and provision your custodial wallet.
+            </p>
             <button
               onClick={onClose}
-              className="w-full btn-primary justify-center text-xs py-2.5"
+              className="w-full btn-secondary justify-center text-xs mt-4"
             >
-              CONTINUE TO WORKSPACE
+              CLOSE WINDOW
             </button>
           </div>
         )}
